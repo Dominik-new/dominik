@@ -1,0 +1,165 @@
+import random, datetime,json
+print("Привевет, хочешь поиграем")
+
+notes=dict()
+with open("notes.json", "r") as file:
+    notes=json.load(file)
+def update_notes():
+    global notes
+    with open("notes.json", "r") as file:
+            notes = json.load(file)
+def save_notes():
+    with open("notes.json", "w") as file:
+        json.dump(notes, file)
+def add_notes(tittle, text):
+    global notes
+    notes[tittle] = text
+    print("Заметка была добавлена")
+def display_notes():
+    update_notes()
+    if len(notes)==0:
+        print("Заметок пока нет")
+    else:
+        for tittle, text in notes.items():
+            print(f"{tittle}:{text}")
+def delete_notes(tittle):
+    if tittle in notes.keys():
+        del notes[tittle]
+        print(f'Запись {tittle} удалена')
+    else:
+        print('Записи не существует')
+def main():
+    while True:
+        print("1-Добавь заметку")
+        print("2-Посмотреть заметки")
+        print("3-Убрать заметку")
+        print("0-Выход")
+        choice = input("Выберете действие:  ")
+        if choice =="1":
+            notes_tittle=input("Введи название заметки:  ")
+            notes_text=input("Введите текст для заметки:  ")
+            add_notes(notes_tittle, notes_text)
+            save_notes()
+        elif choice =="2":
+            print(notes)
+        elif choice == "3":
+            update_notes()
+            for title in notes.keys():
+                print(title)
+            title_to_del = input('Введи название заметки для удаления: ')
+            delete_notes(title_to_del)
+            save_notes()
+        elif choice == "0":
+            print("Иди в парк хотя бы погуляй,надоел в компе сидеть.")
+            break
+        else:
+            print("Неправельный ввод. Повтори ещё раз: ")
+
+
+while True:
+    print("1-Придумать пароль")
+    print("2-Узнать время")
+    print("3-Узнать дату")
+    print("4-Давай сыграем в игру камень, ножни,бумага")
+    print('5-Угодай число')
+    print("6-Вопрос на милион")
+    print("7-Заметки")
+    print("0-Выход")
+    answer=int(input('И так с чего начнём:'))
+    if answer==1:
+        print("Хочешь придщумать пароль?")
+        print("Хорошо тогда я попробую его отгадать")
+        print("Согласен?")
+        bot_passwords=["het", "Cernaja ceburaske"," U mami zavdra den rozdenija"]
+        bot_password=random.choice(bot_passwords)
+        lives=3
+        while True:
+            user_password = input("Введи свой пароль:")
+            if user_password==bot_password:
+                print("Я угодал с тебя сотка")
+                print("Ещё увидемся лошара")
+                break
+            else:
+                print("НЕ угодал!!!???")
+            lives-=1
+            if lives==0:
+                print("Я проиграл")
+                break
+    elif answer == 2:
+        print(",,Я устал залазить ко всем в  компьютер, аж бесит,,")
+        print("Блин я забыл что то что я думаю пишет твоу пк с 20 фпс ")
+        now = datetime.datetime.now()
+        print("Сейчас", now.time())
+    elif answer == 3:
+        now = datetime.datetime.now()
+        print('Сегодня', now.date())
+    elif answer == 4:
+        print('Добро пожаловать на игру камень ножници бумага')
+        list = ['1-Камень',
+            "2-Ножници",
+            "3-Бумага"]
+        print("Выбери один из вариантов:")
+        print(f"1-{list[0]} \n 2-{list[1]} \n 3-{list[2]}")
+        user = int(input("Введи чило от 1 до 3:"))
+        user = list[user - 1]
+        print("Ваш выбор:" + user)
+        bot = random.randint(1, 3)
+        bot = list[bot - 1]
+        print('Выбор бота:' + bot)
+        if user == bot:
+            print('Ничья')
+        elif (user == "Камень" and bot == "Ножници") or \
+                (user == "Бумага" and bot == "Камень") or \
+                (user == "Ножници" and bot == "Бумага"):
+            print('Иди на юг.'
+                  'Просто как ты выйграл читер маленький')
+        else:
+            print("Ты проигралл")
+    elif answer == 5:
+        lives=10
+        number=random.randint(1,100)
+        while True:
+            quess=int(input("Угодай число от 1 до 100"))
+            if quess>number:
+                    print("это число меньше")
+            elif quess<number:
+                print("А ещё меньше нельзя было назвать")
+            else:
+                print("Наконец-то")
+                break
+            if lives==0:
+                break
+    elif answer == 6:
+        questions={"Какая страна смогла прожить оди день без электричевства которая загрязняет природу?":{"A":"Литва",
+                                                                                                         "B":"Беларусь",
+                                                                                                         "C":"Казахстан"},
+                    "Какая самая популярная страна Европы":{"A":"Россия",
+                                                          "B":"Франция",
+                                                          "C":"Казахстан"},
+                    "Как назывался 1 материк на планете Земля":{"A":"Пангея",
+                                                              "B":"Евразия",
+                                                              "C":"Не было материка"}}
+        correct_answers = {
+           "Какая страна смогла прожить оди день без электричевства которая загрязняет природу?": "A",
+           "Какая самая популярная страна Европы": "A",
+           "Как назывался 1 материк на планете Земля": "A"
+        }
+        money=0
+        lvl = 1
+        for question, answers in questions.items():
+           print(question)
+           for num, ans in answers.items():
+              print(f'{num}: {ans}')
+           answer = input('Твой ответ: ')
+           if answer == correct_answers[question]:
+              print('Правильный ответ')
+              money+=1000000*lvl
+              print(f"Заработано 1000000")
+           else:
+               print("Ответ неверный")
+               break
+    elif answer == 7:
+        main()
+    elif answer==0:
+        print("Пока, что-бы тебе земля пухом была")
+        break
